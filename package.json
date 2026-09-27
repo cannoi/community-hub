@@ -1,0 +1,15 @@
+{
+  "name": "community-hub",
+  "version": "1.0.0",
+  "description": "A comprehensive community platform allowing users to create groups, publish posts, engage in discussions, share files, and interact.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7",
+    "multer": "^1.4.5-lts.1"
+  }
+}

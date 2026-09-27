@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>.paf-made-by{position:fixed;right:8px;bottom:8px;width:min(72px,12vw);max-width:12vw;height:auto;object-fit:contain;opacity:.5;background:transparent;padding:0;border:0;box-shadow:none;filter:none;pointer-events:none;z-index:30}</style></head>
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white shadow">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <i class="fas fa-users text-2xl"></i>
+        <h1 class="text-xl font-bold">Community Hub</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div id="user-selector-container" class="flex items-center space-x-2">
+          <span class="text-sm">User:</span>
+          <select id="current-user-select" class="bg-indigo-700 text-white text-sm rounded px-2 py-1 border border-indigo-500 focus:outline-none">
+            <!-- Dynamic users -->
+          </select>
+          <button onclick="openNewUserModal()" class="bg-indigo-500 hover:bg-indigo-400 text-xs px-2 py-1 rounded transition">
+            <i class="fas fa-user-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <div class="container mx-auto px-4 py-6 flex-grow flex flex-col md:flex-row gap-6">
+    <!-- Sidebar: Groups List -->
+    <div class="w-full md:w-1/3 bg-white rounded-lg shadow p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-gray-800"><i class="fas fa-layer-group text-indigo-600 mr-2"></i>Groups</h2>
+        <button onclick="openNewGroupModal()" class="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700 transition">
+          <i class="fas fa-plus mr-1"></i>New Group
+        </button>
+      </div>
+      <div id="groups-list" class="flex-grow overflow-y-auto space-y-2 max-h-[calc(100vh-250px)]">
+        <!-- Dynamic Group items -->
+      </div>
+    </div>
+
+    <!-- Main Content Area: Group Feed / Files -->
+    <div class="w-full md:w-2/3 flex flex-col gap-4">
+      <div id="no-group-selected" class="bg-white rounded-lg shadow p-8 text-center text-gray-500">
+        <i class="fas fa-comments text-4xl mb-2 text-indigo-400"></i>
+        <p>Select a community group from the sidebar or create a new one to start collaborating.</p>
+      </div>
+
+      <div id="group-detail-view" class="hidden flex flex-col gap-4">
+        <!-- Group Header Card -->
+        <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+          <div>
+            <h2 id="active-group-name" class="text-xl font-bold text-gray-800"></h2>
+            <p id="active-group-desc" class="text-sm text-gray-600"></p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button id="join-group-btn" onclick="joinActiveGroup()" class="bg-green-600 text-white px-3 py-1.5 text-sm rounded hover:bg-green-700 transition hidden">
+              <i class="fas fa-user-plus mr-1"></i>Join Group
+            </button>
+            <div class="text-sm bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full">
+              <i class="fas fa-user-friends mr-1"></i><span id="active-group-members-count">0</span> members
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 bg-white rounded-t-lg px-4">
+          <button onclick="switchTab('feed')" id="tab-feed" class="py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 font-medium text-sm focus:outline-none">
+            <i class="fas fa-stream mr-1"></i>Feed & Discussions
+          </button>
+          <button onclick="switchTab('files')" id="tab-files" class="py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm focus:outline-none">
+            <i class="fas fa-folder-open mr-1"></i>Shared Files
+          </button>
+        </div>
+
+        <!-- Tab Content: Feed -->
+        <div id="content-feed" class="flex flex-col gap-4">
+          <!-- New Post Card -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <form id="new-post-form" onsubmit="submitPost(event)" class="flex flex-col gap-3">
+              <textarea id="post-content" rows="3" placeholder="Share something with the community..." class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" required></textarea>
+              <div class="flex justify-between items-center">
+                <label class="cursor-pointer text-sm text-gray-600 hover:text-indigo-600 flex items-center">
+                  <i class="fas fa-paperclip mr-2"></i>
+                  <span id="file-name-label">Attach file/image</span>
+                  <input type="file" id="post-file" class="hidden" onchange="updateFileName(this)">
+                </label>
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition">
+                  <i class="fas fa-paper-plane mr-1"></i>Post
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Posts Feed Container -->
+          <div id="posts-container" class="flex flex-col gap-4">
+            <!-- Dynamic Posts -->
+          </div>
+        </div>
+
+        <!-- Tab Content: Files -->
+        <div id="content-files" class="hidden bg-white rounded-lg shadow p-4">
+          <h3 class="text-md font-semibold text-gray-800 mb-3"><i class="fas fa-file-alt text-indigo-600 mr-2"></i>Repository of Shared Files</h3>
+          <div id="files-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Dynamic files -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: New Group -->
+  <div id="modal-group" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-800">Create New Group</h3>
+        <button onclick="closeNewGroupModal()" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+      </div>
+      <form onsubmit="createGroup(event)" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Group Name</label>
+          <input type="text" id="group-name-input" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 text-sm" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea id="group-desc-input" rows="3" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 text-sm"></textarea>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeNewGroupModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm">Cancel</button>
+          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: New User -->
+  <div id="modal-user" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-800">Create New User</h3>
+        <button onclick="closeNewUserModal()" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+      </div>
+      <form onsubmit="createUser(event)" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+          <input type="text" id="username-input" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 text-sm" required>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeNewUserModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm">Cancel</button>
+          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">Create User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Made with badge -->
+  <div class="paf-made-by text-center py-4 text-xs text-gray-400 mt-auto">
+    Made with App Builder — Pi SoloHost
+  </div>
+
+  <script>
+    let currentUser = null;
+    let usersList = [];
+    let groupsList = [];
+    let activeGroupId = null;
+
+    async function init() {
+      await loadUsers();
+      await loadGroups();
+    }
+
+    async function loadUsers() {
+      try {
+        const res = await fetch('/api/users');
+        usersList = await res.json();
+        const select = document.getElementById('current-user-select');
+        select.innerHTML = '';
+        usersList.forEach(u => {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.textContent = u.username;
+          select.appendChild(opt);
+        });
+        if (usersList.length > 0) {
+          currentUser = usersList[0].id;
+          select.value = currentUser;
+        }
+        select.onchange = (e) => {
+          currentUser = parseInt(e.target.value);
+          if (activeGroupId) loadGroupDetails(activeGroupId);
+        };
+      } catch (err) {
+        console.error('Failed to load users', err);
+      }
+    }
+
+    async function loadGroups() {
+      try {
+        const res = await fetch('/api/groups');
+        groupsList = await res.json();
+        const container = document.getElementById('groups-list');
+        container.innerHTML = '';
+        groupsList.forEach(g => {
+          const div = document.createElement('div');
+          div.className = `p-3 rounded-lg cursor-pointer border transition ${activeGroupId === g.id ? 'bg-indigo-50 border-indigo-300' : 'bg-white border-gray-200 hover:bg-gray-50'}`;
+          div.onclick = () => selectGroup(g.id);
+          div.innerHTML = `
+            <div class="flex justify-between items-center mb-1">
+              <h3 class="font-semibold text-gray-800 text-sm">${escapeHtml(g.name)}</h3>
+              <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">${g.member_count} members</span>
+            </div>
+            <p class="text-xs text-gray-500 truncate">${escapeHtml(g.description || 'No description')}</p>
+          `;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Failed to load groups', err);
+      }
+    }
+
+    async function selectGroup(id) {
+      activeGroupId = id;
+      document.getElementById('no-group-selected').classList.add('hidden');
+      document.getElementById('group-detail-view').classList.remove('hidden');
+      loadGroups();
+      loadGroupDetails(id);
+      switchTab('feed');
+    }
+
+    async function loadGroupDetails(id) {
+      const group = groupsList.find(g => g.id === id);
+      if (!group) return;
+      document.getElementById('active-group-name').textContent = group.name;
+      document.getElementById('active-group-desc').textContent = group.description || '';
+      document.getElementById('active-group-members-count').textContent = group.member_count;
+
+      // Check if current user is member
+      try {
+        const res = await fetch(`/api/groups/${id}/members`);
+        const members = await res.json();
+        const isMember = members.some(m => m.user_id === currentUser);
+        const joinBtn = document.getElementById('join-group-btn');
+        if (!isMember) {
+          joinBtn.classList.remove('hidden');
+        } else {
+          joinBtn.classList.add('hidden');
+        }
+      } catch(e) { console.error(e); }
+
+      loadPosts(id);
+      loadFiles(id);
+    }
+
+    async function joinActiveGroup() {
+      if (!activeGroupId || !currentUser) return;
+      try {
+        const res = await fetch(`/api/groups/${activeGroupId}/join`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: currentUser })
+        });
+        if (res.ok) {
+          loadGroups();
+          loadGroupDetails(activeGroupId);
+        }
+      } catch(err) {
+        console.error('Failed to join group', err);
+      }
+    }
+
+    async function loadPosts(groupId) {
+      try {
+        const res = await fetch(`/api/groups/${groupId}/posts`);
+        const posts = await res.json();
+        const container = document.getElementById('posts-container');
+        container.innerHTML = '';
+        if (posts.length === 0) {
+          container.innerHTML = '<div class="bg-white rounded-lg shadow p-6 text-center text-gray-400 text-sm">No posts yet. Be the first to share something!</div>';
+          return;
+        }
+        posts.forEach(p => {
+          const postCard = document.createElement('div');
+          postCard.className = 'bg-white rounded-lg shadow p-4 flex flex-col gap-3';
+          let fileHtml = '';
+          if (p.file_url) {
+            const isImg = p.file_url.match(/\.(jpeg|jpg|gif|png)$/i);
+            if (isImg) {
+              fileHtml = `<div class="mt-2"><img src="${p.file_url}" class="max-h-64 rounded border"></div>`;
+            } else {
+              fileHtml = `<div class="mt-2"><a href="${p.file_url}" target="_blank" class="inline-flex items-center text-sm text-indigo-600 bg-indigo-50 p-2 rounded hover:underline"><i class="fas fa-file-download mr-2"></i> Download Attached File</a></div>`;
+            }
+          }
+          postCard.innerHTML = `
+            <div class="flex items-center space-x-3">
+              <img src="${p.avatar}" class="w-10 h-10 rounded-full bg-gray-200">
+              <div>
+                <h4 class="font-semibold text-sm text-gray-800">${escapeHtml(p.username)}</h4>
+                <span class="text-xs text-gray-400">${new Date(p.created_at).toLocaleString()}</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700 whitespace-pre-line">${escapeHtml(p.content)}</p>
+            ${fileHtml}
+            <div class="flex items-center space-x-4 border-t pt-2 text-sm text-gray-500">
+              <button onclick="toggleReaction(${p.id})" class="hover:text-indigo-600 flex items-center space-x-1">
+                <i class="fas fa-heart text-red-500"></i> <span>${p.reaction_count} Likes</span>
+              </button>
+              <button onclick="toggleComments(${p.id})" class="hover:text-indigo-600 flex items-center space-x-1">
+                <i class="fas fa-comment"></i> <span>${p.comment_count} Comments</span>
+              </button>
+            </div>
+            <div id="comments-section-${p.id}" class="hidden flex flex-col gap-2 mt-2 border-t pt-2">
+              <div id="comments-list-${p.id}" class="flex flex-col gap-2 text-sm"></div>
+              <div class="flex gap-2 mt-1">
+                <input type="text" id="comment-input-${p.id}" placeholder="Write a comment..." class="flex-grow p-2 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                <button onclick="submitComment(${p.id})" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700">Send</button>
+              </div>
+            </div>
+          `;
+          container.appendChild(postCard);
+        });
+      } catch (err) {
+        console.error('Failed to load posts', err);
+      }
+    }
+
+    async function submitPost(e) {
+      e.preventDefault();
+      if (!activeGroupId || !currentUser) return;
+      const content = document.getElementById('post-content').value;
+      const fileInput = document.getElementById('post-file');
+      const formData = new FormData();
+      formData.append('user_id', currentUser);
+      formData.append('content', content);
+      if (fileInput.files[0]) {
+        formData.append('file', fileInput.files[0]);
+      }
+      try {
+        const res = await fetch(`/api/groups/${activeGroupId}/posts`, {
+          method: 'POST',
+          body: formData
+        });
+        if (res.ok) {
+          document.getElementById('post-content').value = '';
+          fileInput.value = '';
+          document.getElementById('file-name-label').textContent = 'Attach file/image';
+          loadPosts(activeGroupId);
+          loadFiles(activeGroupId);
+        }
+      } catch (err) {
+        console.error('Failed to submit post', err);
+      }
+    }
+
+    function updateFileName(input) {
+      const label = document.getElementById('file-name-label');
+      if (input.files && input.files[0]) {
+        label.textContent = input.files[0].name;
+      } else {
+        label.textContent = 'Attach file/image';
+      }
+    }
+
+    async function toggleReaction(postId) {
+      if (!currentUser) return;
+      try {
+        await fetch(`/api/posts/${postId}/react`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: currentUser })
+        });
+        loadPosts(activeGroupId);
+      } catch (err) {
+        console.error('Failed to react', err);
+      }
+    }
+
+    async function toggleComments(postId) {
+      const section = document.getElementById(`comments-section-${postId}`);
+      section.classList.toggle('hidden');
+      if (!section.classList.contains('hidden')) {
+        loadComments(postId);
+      }
+    }
+
+    async function loadComments(postId) {
+      try {
+        const res = await fetch(`/api/posts/${postId}/comments`);
+        const comments = await res.json();
+        const list = document.getElementById(`comments-list-${postId}`);
+        list.innerHTML = '';
+        comments.forEach(c => {
+          const div = document.createElement('div');
+          div.className = 'bg-gray-50 p-2 rounded flex items-start space-x-2';
+          div.innerHTML = `
+            <img src="${c.avatar}" class="w-6 h-6 rounded-full mt-0.5">
+            <div>
+              <span class="font-semibold text-xs text-gray-800 mr-2">${escapeHtml(c.username)}</span>
+              <span class="text-xs text-gray-700">${escapeHtml(c.content)}</span>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Failed to load comments', err);
+      }
+    }
+
+    async function submitComment(postId) {
+      const input = document.getElementById(`comment-input-${postId}`);
+      const content = input.value;
+      if (!content || !currentUser) return;
+      try {
+        const res = await fetch(`/api/posts/${postId}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: currentUser, content })
+        });
+        if (res.ok) {
+          input.value = '';
+          loadComments(postId);
+          loadPosts(activeGroupId);
+        }
+      } catch (err) {
+        console.error('Failed to submit comment', err);
+      }
+    }
+
+    async function loadFiles(groupId) {
+      try {
+        const res = await fetch(`/api/groups/${groupId}/files`);
+        const files = await res.json();
+        const container = document.getElementById('files-container');
+        container.innerHTML = '';
+        if (files.length === 0) {
+          container.innerHTML = '<div class="col-span-2 text-center text-gray-400 text-sm py-4">No files shared in this group yet.</div>';
+          return;
+        }
+        files.forEach(f => {
+          const card = document.createElement('div');
+          card.className = 'border border-gray-200 rounded p-3 flex justify-between items-center bg-gray-50';
+          card.innerHTML = `
+            <div class="flex items-center space-x-3 truncate">
+              <i class="fas fa-file text-indigo-500 text-xl"></i>
+              <div class="truncate">
+                <a href="${f.file_url}" target="_blank" class="text-sm font-medium text-indigo-600 hover:underline truncate block">${f.file_url.split('-').slice(2).join('-') || 'Document'}</a>
+                <span class="text-xs text-gray-400">By ${escapeHtml(f.username)} on ${new Date(f.created_at).toLocaleDateString()}</span>
+              </div>
+            </div>
+            <a href="${f.file_url}" download class="bg-white border border-gray-300 hover:bg-gray-100 p-2 rounded text-sm text-gray-700">
+              <i class="fas fa-download"></i>
+            </a>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Failed to load files', err);
+      }
+    }
+
+    function switchTab(tab) {
+      if (tab === 'feed') {
+        document.getElementById('tab-feed').className = 'py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 font-medium text-sm focus:outline-none';
+        document.getElementById('tab-files').className = 'py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm focus:outline-none';
+        document.getElementById('content-feed').classList.remove('hidden');
+        document.getElementById('content-files').classList.add('hidden');
+      } else {
+        document.getElementById('tab-files').className = 'py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 font-medium text-sm focus:outline-none';
+        document.getElementById('tab-feed').className = 'py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm focus:outline-none';
+        document.getElementById('content-files').classList.remove('hidden');
+        document.getElementById('content-feed').classList.add('hidden');
+      }
+    }
+
+    function openNewGroupModal() {
+      document.getElementById('modal-group').classList.remove('hidden');
+    }
+
+    function closeNewGroupModal() {
+      document.getElementById('modal-group').classList.add('hidden');
+    }
+
+    async function createGroup(e) {
+      e.preventDefault();
+      const name = document.getElementById('group-name-input').value;
+      const description = document.getElementById('group-desc-input').value;
+      if (!currentUser) return;
+      try {
+        const res = await fetch('/api/groups', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description, user_id: currentUser })
+        });
+        if (res.ok) {
+          closeNewGroupModal();
+          document.getElementById('group-name-input').value = '';
+          document.getElementById('group-desc-input').value = '';
+          loadGroups();
+        }
+      } catch (err) {
+        console.error('Failed to create group', err);
+      }
+    }
+
+    function openNewUserModal() {
+      document.getElementById('modal-user').classList.remove('hidden');
+    }
+
+    function closeNewUserModal() {
+      document.getElementById('modal-user').classList.add('hidden');
+    }
+
+    async function createUser(e) {
+      e.preventDefault();
+      const username = document.getElementById('username-input').value;
+      try {
+        const res = await fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+        if (res.ok) {
+          const newUser = await res.json();
+          closeNewUserModal();
+          document.getElementById('username-input').value = '';
+          await loadUsers();
+          currentUser = newUser.id;
+          document.getElementById('current-user-select').value = currentUser;
+          if (activeGroupId) loadGroupDetails(activeGroupId);
+        } else {
+          alert('Username might already exist.');
+        }
+      } catch (err) {
+        console.error('Failed to create user', err);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    window.onload = init;
+  </script>
+<img class="paf-made-by" src="/made-by.png" alt="Made with App Builder — Pi SoloHost"></body>
+</html>
