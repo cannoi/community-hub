@@ -1,0 +1,30 @@
+{
+  "name": "community-hub",
+  "version": "2.3.0",
+  "description": "Lightweight, self-hosted, federated community and social network with signed events, user-owned identity, Global Presence, optional libp2p networking and an AI assistant.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test --test-concurrency=1 --test-force-exit --test-timeout=60000 tests/*.test.js tests/presence/*.test.js tests/regression-2.1.4/*.test.js",
+    "test:unit": "node --test tests/ledger.test.js tests/assistant.test.js",
+    "test:integration": "node --test --test-concurrency=1 tests/identity.test.js tests/social.test.js tests/federation.test.js tests/reliability.test.js",
+    "test:health": "node test.js",
+    "backup": "node scripts/backup.js",
+    "restore": "node scripts/restore.js",
+    "test:presence": "node --test --test-timeout=30000 tests/presence/*.test.js",
+    "test:p2p": "node --test --test-force-exit --test-timeout=60000 tests/p2p-connection.test.js tests/net-adapter.test.js"
+  },
+  "dependencies": {
+    "libp2p": "3.5.1",
+    "@libp2p/websockets": "10.1.25",
+    "@libp2p/noise": "17.0.7",
+    "@libp2p/yamux": "8.0.7",
+    "@libp2p/identify": "4.1.18",
+    "@libp2p/ping": "3.1.17",
+    "@libp2p/peer-id": "6.0.18",
+    "@libp2p/crypto": "5.2.0"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "app": "Community Hub",
+  "version": "2.3.0",
+  "languages": ["en", "vi"],
+  "topics": [
+    "greet", "thanks", "post", "edit_delete", "follow", "media", "groups", "privacy",
+    "network", "remote", "backup", "identity", "notifications", "search", "bookmarks",
+    "settings", "setup", "dm", "ai", "feedback", "quota", "offline", "embeds", "chunked",
+    "presence", "find_people", "directory"
+  ],
+  "notes": [
+    "Assistant lives under More → Assistant with tabs Chat, Feedback, AI Settings, Logs (no FAB).",
+    "Global Presence (2.3.0): Hubs can register themselves with optional directory seeds so people find each other by name/account without bulk sync of all posts. Content is loaded on demand when you open a profile.",
+    "Presence is off by default when no PRESENCE_SEEDS are set; the Hub stays fully local and works offline.",
+    "Host port for SoloHost public links defaults to 28090, not container 8080.",
+    "Direct messages are not available. Group and followers-only posts stay on this Hub.",
+    "External AI is optional and quota-limited; offline guide always works.",
+    "Remote /api/remote/info is owner-only; anonymous callers cannot learn public IP.",
+    "Chunked upload: POST /api/media/sessions → PUT chunks → POST complete (5 MiB parts).",
+    "Link embeds: YouTube/Vimeo safe iframes; other links use SSRF-safe unfurl previews.",
+    "Federation: hello can use Host-derived endpoint; /connect and /inbox support NAT push.",
+    "Bulk content sync between trusted peers is opt-in (content_sync = trusted); default is off to save bandwidth and storage.",
+    "Backup uses consistent SQLite VACUUM INTO snapshot so WAL pages are not lost."
+  ],
+  "scenarios": [
+    { "id": "setup-two-step", "ask": ["how do I set up", "tao hub"], "mustIncludeAny": ["account", "network", "tai khoan", "mang"] },
+    { "id": "post-public", "ask": ["public post", "bai cong khai"], "mustIncludeAny": ["Public", "Cong khai", "Hub"] },
+    { "id": "no-dm", "ask": ["send a dm", "tin nhan rieng"], "mustIncludeAny": ["not available", "disabled", "khong", "chưa"] },
+    { "id": "presence-find", "ask": ["how do I find people", "tim ban", "presence", "directory"], "mustIncludeAny": ["Network", "Presence", "search", "find", "tim", "mang"] },
+    { "id": "presence-local", "ask": ["is my hub private", "hub offline", "local only"], "mustIncludeAny": ["local", "seed", "offline", "cuc bo", "offline"] }
+  ]
+}
