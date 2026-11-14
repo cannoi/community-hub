@@ -1,0 +1,37 @@
+services:
+  app:
+    image: ghcr.io/OWNER/community-hub:latest
+    restart: unless-stopped
+    labels:
+      pi.ui.primary: "true"
+    ports:
+      - "127.0.0.1:28090:8080"
+    environment:
+      - PORT=8080
+      # --- optional (see docs/DEPLOYMENT.md); empty values keep the safe defaults ---
+      - HUB_PUBLIC_URL=${HUB_PUBLIC_URL:-http://14.176.78.46:28090}
+      - HUB_BOOTSTRAP_PEERS=${HUB_BOOTSTRAP_PEERS:-}
+      - HUB_SETUP_TOKEN=${HUB_SETUP_TOKEN:-}
+      - HUB_ALLOW_REGISTRATION=${HUB_ALLOW_REGISTRATION:-false}
+      - HUB_KEY_PASSPHRASE=${HUB_KEY_PASSPHRASE:-}
+      - HUB_TRUST_PROXY=${HUB_TRUST_PROXY:-false}
+      - AI_BASE_URL=${AI_BASE_URL:-}
+      - AI_MODEL=${AI_MODEL:-}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - PUBLIC_URL=${PUBLIC_URL:-http://14.176.78.46:28090}
+      - PUBLIC_IP=${PUBLIC_IP:-}
+      - HOST_PORT=${HOST_PORT:-28090}
+      - HUB_SEEDS=${HUB_SEEDS:-}
+      - HUB_FEDERATION_MODE=${HUB_FEDERATION_MODE:-}
+      # --- CANNOI P2P: auto-discovery via the existing HTTP port; no extra public port is published. ---
+      - P2P_ENABLED=${P2P_ENABLED:-true}
+      - P2P_WS_GATEWAY=${P2P_WS_GATEWAY:-true}
+      - P2P_BOOTSTRAP=${P2P_BOOTSTRAP:-}
+      - P2P_MAX_CONNECTIONS=${P2P_MAX_CONNECTIONS:-50}
+      - P2P_FIXED_SEEDS=${P2P_FIXED_SEEDS:-http://14.176.78.46:28090}
+
+    volumes:
+      - hub-data:/app/data
+
+volumes:
+  hub-data:
