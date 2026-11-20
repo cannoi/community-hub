@@ -1,0 +1,12 @@
+# SoloHost — zero required input. Public IP auto-detected inside the app.
+version: 1
+name: Community Hub
+description: >
+  International community app (English / Tiếng Việt) with automatic P2P discovery.
+  Install and open — no configuration form required.
+options: []
+ports:
+  - 8181
+volumes:
+  - hub-data
+image: ghcr.io/cannoi/community-hub:latest
