@@ -1,0 +1,30 @@
+HTTP/2 200 
+date: Sun, 22 Nov 2026 16:34:01 GMT
+content-type: application/json; charset=utf-8
+content-length: 325
+access-control-allow-origin: *
+cache-control: no-store
+access-control-allow-headers: content-type
+access-control-allow-methods: GET, POST, OPTIONS
+access-control-max-age: 86400
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=cnGobm7ZUinjv7mG5YqLakLgp3MOsJ5k%2FvhW6Cbh4NcLUTI%2B5HdUxi%2Bg1%2B1f1SQOMypEOET8yIeE0bzqSRsmCRYeMaO%2FYyh9fEGzgJ3BXhlhXp8OUM56Oh1EdWYFdla0PzdN2gBcWZAP3fyhyGYINW%2F9%2B6Ci8bqO9xHmjOu7W3zFZVE5JhW%2B5rbH7u8Z"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a5e956d58ab79bb9-IAD
+alt-svc: h3=":443"; ma=86400
+
+{
+  "service": "cannoi-community-bootstrap",
+  "version": "1.0.0",
+  "network": "cannoi",
+  "protocol": "1.0.0",
+  "role": "rendezvous-seed",
+  "status": "directory",
+  "endpoints": {
+    "health": "GET /health",
+    "bootstrap": "GET /p2p/bootstrap",
+    "register": "POST /p2p/register",
+    "stats": "GET /p2p/stats"
+  }
+}

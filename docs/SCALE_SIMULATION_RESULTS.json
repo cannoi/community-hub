@@ -1,0 +1,295 @@
+{
+ "class": "ALGORITHMIC SIMULATION (single machine) — not a network test",
+ "date": "2026-11-22T00:13:06.002Z",
+ "node": "v22.23.4",
+ "assignment": {
+  "100": {
+   "hubs": 100,
+   "eligible_hosts": 28,
+   "method": "exact",
+   "plan_ms": 11,
+   "max_shards_per_host_capacity_aware": 32,
+   "hosts_used": 26,
+   "shards_under_replicated_with_caps": 0,
+   "naive_top3_max_load": 38,
+   "naive_hosts_over_cap": 3,
+   "churn": {
+    "1%": {
+     "slots_moved_pct": 0,
+     "ideal_pct": 1
+    },
+    "5%": {
+     "slots_moved_pct": 2.6,
+     "ideal_pct": 5
+    },
+    "20%": {
+     "slots_moved_pct": 26.6,
+     "ideal_pct": 20
+    }
+   }
+  },
+  "1000": {
+   "hubs": 1000,
+   "eligible_hosts": 283,
+   "method": "exact",
+   "plan_ms": 20,
+   "max_shards_per_host_capacity_aware": 6,
+   "hosts_used": 75,
+   "shards_under_replicated_with_caps": 0,
+   "naive_top3_max_load": 6,
+   "naive_hosts_over_cap": 0,
+   "churn": {
+    "1%": {
+     "slots_moved_pct": 0,
+     "ideal_pct": 1
+    },
+    "5%": {
+     "slots_moved_pct": 10.9,
+     "ideal_pct": 5
+    },
+    "20%": {
+     "slots_moved_pct": 25,
+     "ideal_pct": 20
+    }
+   }
+  },
+  "10000": {
+   "hubs": 10000,
+   "eligible_hosts": 2805,
+   "method": "exact",
+   "plan_ms": 231,
+   "max_shards_per_host_capacity_aware": 4,
+   "hosts_used": 159,
+   "shards_under_replicated_with_caps": 0,
+   "naive_top3_max_load": 4,
+   "naive_hosts_over_cap": 0,
+   "churn": {
+    "1%": {
+     "slots_moved_pct": 1,
+     "ideal_pct": 1
+    },
+    "5%": {
+     "slots_moved_pct": 1.6,
+     "ideal_pct": 5
+    },
+    "20%": {
+     "slots_moved_pct": 17.7,
+     "ideal_pct": 20
+    }
+   }
+  },
+  "100000": {
+   "hubs": 100000,
+   "eligible_hosts": 27880,
+   "method": "exact",
+   "plan_ms": 2126,
+   "max_shards_per_host_capacity_aware": 2,
+   "hosts_used": 190,
+   "shards_under_replicated_with_caps": 0,
+   "naive_top3_max_load": 2,
+   "naive_hosts_over_cap": 0,
+   "churn": {
+    "1%": {
+     "slots_moved_pct": 0.5,
+     "ideal_pct": 1
+    },
+    "5%": {
+     "slots_moved_pct": 6.3,
+     "ideal_pct": 5
+    },
+    "20%": {
+     "slots_moved_pct": 23.4,
+     "ideal_pct": 20
+    }
+   }
+  },
+  "1000000": {
+   "hubs": 1000000,
+   "eligible_hosts": 279751,
+   "method": "EXTRAPOLATED (8 of 64 shards computed exactly, time x8)",
+   "plan_ms": 25794
+  }
+ },
+ "search": {
+  "100": {
+   "hubs": 100,
+   "reach_without_replicas_pct": 25,
+   "peers_needed_to_cover_all_shards": 5,
+   "cover_fits_in_24_peer_budget": true,
+   "peers_needed_with_capacity_power_3": 5,
+   "peers_needed_with_capacity_power_6": 5,
+   "latency_model_ms": {
+    "fail_5%": {
+     "first_remote_p50": 29.7,
+     "first_remote_p95": 56.9,
+     "complete_p50": 3123.7,
+     "complete_p95": 7665.3,
+     "sessions_partial_pct": 69,
+     "local_results_ms": "~0 (local stage is immediate)"
+    },
+    "fail_30%": {
+     "first_remote_p50": 30.3,
+     "first_remote_p95": 57.9,
+     "complete_p50": 10000,
+     "complete_p95": 10000,
+     "sessions_partial_pct": 100,
+     "local_results_ms": "~0 (local stage is immediate)"
+    }
+   }
+  },
+  "1000": {
+   "hubs": 1000,
+   "reach_without_replicas_pct": 2.5,
+   "peers_needed_to_cover_all_shards": 23,
+   "cover_fits_in_24_peer_budget": true,
+   "peers_needed_with_capacity_power_3": 23,
+   "peers_needed_with_capacity_power_6": 23,
+   "latency_model_ms": {
+    "fail_5%": {
+     "first_remote_p50": 30,
+     "first_remote_p95": 59.8,
+     "complete_p50": 3148.1,
+     "complete_p95": 7570,
+     "sessions_partial_pct": 72,
+     "local_results_ms": "~0 (local stage is immediate)"
+    },
+    "fail_30%": {
+     "first_remote_p50": 30.1,
+     "first_remote_p95": 59.6,
+     "complete_p50": 10000,
+     "complete_p95": 10000,
+     "sessions_partial_pct": 100,
+     "local_results_ms": "~0 (local stage is immediate)"
+    }
+   }
+  },
+  "10000": {
+   "hubs": 10000,
+   "reach_without_replicas_pct": 0.25,
+   "peers_needed_to_cover_all_shards": 49,
+   "cover_fits_in_24_peer_budget": false,
+   "peers_needed_with_capacity_power_3": 49,
+   "peers_needed_with_capacity_power_6": 49,
+   "latency_model_ms": {
+    "fail_5%": {
+     "first_remote_p50": 30.7,
+     "first_remote_p95": 58.1,
+     "complete_p50": 3116.7,
+     "complete_p95": 7551.7,
+     "sessions_partial_pct": 69,
+     "local_results_ms": "~0 (local stage is immediate)"
+    },
+    "fail_30%": {
+     "first_remote_p50": 30.4,
+     "first_remote_p95": 59.1,
+     "complete_p50": 10000,
+     "complete_p95": 10000,
+     "sessions_partial_pct": 100,
+     "local_results_ms": "~0 (local stage is immediate)"
+    }
+   }
+  },
+  "100000": {
+   "hubs": 100000,
+   "reach_without_replicas_pct": 0.03,
+   "peers_needed_to_cover_all_shards": 61,
+   "cover_fits_in_24_peer_budget": false,
+   "peers_needed_with_capacity_power_3": 61,
+   "peers_needed_with_capacity_power_6": 61,
+   "latency_model_ms": {
+    "fail_5%": {
+     "first_remote_p50": 29.3,
+     "first_remote_p95": 58.4,
+     "complete_p50": 3131.4,
+     "complete_p95": 7669.9,
+     "sessions_partial_pct": 72,
+     "local_results_ms": "~0 (local stage is immediate)"
+    },
+    "fail_30%": {
+     "first_remote_p50": 30,
+     "first_remote_p95": 57.7,
+     "complete_p50": 10000,
+     "complete_p95": 10000,
+     "sessions_partial_pct": 100,
+     "local_results_ms": "~0 (local stage is immediate)"
+    }
+   }
+  },
+  "1000000": {
+   "hubs": 1000000,
+   "reach_without_replicas_pct": 0,
+   "peers_needed_to_cover_all_shards": "not computed (>100k); bounded by 64 shards x R=3 hosts",
+   "latency_model_ms": {
+    "fail_5%": {
+     "first_remote_p50": 30.9,
+     "first_remote_p95": 58.6,
+     "complete_p50": 3124.9,
+     "complete_p95": 7555.3,
+     "sessions_partial_pct": 71,
+     "local_results_ms": "~0 (local stage is immediate)"
+    },
+    "fail_30%": {
+     "first_remote_p50": 29.8,
+     "first_remote_p95": 57.3,
+     "complete_p50": 10000,
+     "complete_p95": 10000,
+     "sessions_partial_pct": 100,
+     "local_results_ms": "~0 (local stage is immediate)"
+    }
+   }
+  }
+ },
+ "directory": [
+  {
+   "offered": 5000,
+   "cap": 5000,
+   "stored": 5000,
+   "put_ms_total": 71.2,
+   "put_per_sec": 70225,
+   "query_p50_ms": 1.1,
+   "query_p95_ms": 32.4,
+   "heap_mb": -14,
+   "page_size_max_returned": 20
+  },
+  {
+   "offered": 50000,
+   "cap": 50000,
+   "stored": 50000,
+   "put_ms_total": 496,
+   "put_per_sec": 100806,
+   "query_p50_ms": 9.5,
+   "query_p95_ms": 18.6,
+   "heap_mb": 36.2,
+   "page_size_max_returned": 20
+  },
+  {
+   "offered": 100000,
+   "cap": 100000,
+   "stored": 100000,
+   "put_ms_total": 886.7,
+   "put_per_sec": 112778,
+   "query_p50_ms": 25,
+   "query_p95_ms": 45.4,
+   "heap_mb": 106.5,
+   "page_size_max_returned": 20
+  }
+ ],
+ "plan_agreement_partial_views": {
+  "100% view": {
+   "same_primary_pct": 100,
+   "same_top3_pct": 100
+  },
+  "50% view": {
+   "same_primary_pct": 33.7,
+   "same_top3_pct": 4.6
+  },
+  "10% view": {
+   "same_primary_pct": 6.9,
+   "same_top3_pct": 0.1
+  },
+  "1% view": {
+   "same_primary_pct": 0.6,
+   "same_top3_pct": 0
+  }
+ }
+}

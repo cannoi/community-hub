@@ -1,0 +1,33 @@
+HTTP/2 200 
+date: Sun, 22 Nov 2026 16:34:01 GMT
+content-type: application/json; charset=utf-8
+content-length: 347
+access-control-allow-origin: *
+cache-control: no-store
+access-control-allow-headers: content-type
+access-control-allow-methods: GET, POST, OPTIONS
+access-control-max-age: 86400
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=pimu3e%2BkPr27z22LMAIwB%2Fxo7IavBqQUeOPMPJAfJ4TMBhElJWc3P0%2Fc%2Bv5u2nO03JiytDDsBWQ2LYA4PXSKtbrELWxG%2FyHfq4ldvCBXMamV1ro7UqCdsFUF5RgLTJtCJjJkDw6Y9%2BfHf3Ds5IhrgVU4y3t0Kjcs4wiavjNscAvxm2RxZoOSaNRfWpQH"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a5e956d70c830ac8-IAD
+alt-svc: h3=":443"; ma=86400
+
+{
+  "network": "cannoi",
+  "protocol": "1.0.0",
+  "status": "directory",
+  "role": "rendezvous-seed",
+  "peer_id": null,
+  "multiaddrs": [],
+  "peers": [],
+  "count": 0,
+  "version": "1.0.0",
+  "updated_at": "2026-11-22T16:34:01.651Z",
+  "registry": {
+    "service": "cannoi-community-bootstrap",
+    "limit": 200,
+    "verified_only": false
+  }
+}

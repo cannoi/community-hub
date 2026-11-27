@@ -1,0 +1,44 @@
+{
+  "name": "community-hub",
+  "version": "2.4.5",
+  "description": "Lightweight self-hosted community + federated social network for Pi SoloHost. English / Tiếng Việt. Zero runtime dependencies for core; optional libp2p for CANNOI Resilient Network (P2P, offline-first, LAN, GossipSub).",
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  },
+  "main": "server.js",
+  "scripts": {
+    "dev": "PORT=3000 HOST=0.0.0.0 node server.js",
+    "start": "PORT=3000 HOST=0.0.0.0 node server.js",
+    "build": "node --check server.js",
+    "lint": "node --check server.js",
+    "test": "node --test --test-concurrency=1 --test-force-exit --test-timeout=60000 tests/*.test.js tests/presence/*.test.js tests/regression-2.1.4/*.test.js",
+    "test:p2p": "node --test --test-concurrency=1 --test-force-exit --test-timeout=90000 tests/p2p-distributed-index.test.js tests/p2p-index-replication.test.js tests/p2p-federated-search.test.js tests/p2p-delta-sync-healing.test.js tests/phase8-security.test.js tests/phase8-load-solohost.test.js tests/p2p-phase1-repair.test.js tests/p2p-bootstrap.test.js tests/deployment-network-defaults.test.js tests/p2p-connection.test.js tests/p2p-discovery.test.js tests/p2p-peer-crawl.test.js tests/p2p-nat-relay.test.js tests/p2p-lan.test.js tests/p2p-store-forward.test.js tests/p2p-gossip-sync.test.js tests/p2p-network-state.test.js tests/p2p-network-ui.test.js tests/p2p-integration.test.js tests/p2p-policy.test.js tests/net-adapter.test.js tests/p2p-dependency-manifest.test.js tests/p2p-seed-server.test.js tests/network-ui-fixes.test.js",
+    "test:adapter": "node --test --test-concurrency=1 --test-force-exit tests/net-adapter.test.js",
+    "backup": "node scripts/backup.js",
+    "restore": "node scripts/restore.js",
+    "seed": "node scripts/presence-seed.js",
+    "release:check": "node scripts/release-check.js",
+    "sim:scale": "node scripts/scale-sim.js"
+  },
+  "dependencies": {
+    "@libp2p/autonat": "3.0.33",
+    "@libp2p/bootstrap": "12.0.37",
+    "@libp2p/circuit-relay-v2": "4.2.18",
+    "@libp2p/crypto": "5.2.0",
+    "@libp2p/dcutr": "3.0.33",
+    "@libp2p/gossipsub": "17.2.1",
+    "@libp2p/identify": "4.1.18",
+    "@libp2p/kad-dht": "16.4.10",
+    "@libp2p/mdns": "12.0.37",
+    "@libp2p/noise": "17.0.7",
+    "@libp2p/peer-id": "6.0.18",
+    "@libp2p/ping": "3.1.17",
+    "@libp2p/websockets": "10.1.25",
+    "@libp2p/yamux": "8.0.7",
+    "@multiformats/multiaddr": "13.0.3",
+    "libp2p": "3.5.1"
+  },
+  "optionalDependencies": {},
+  "devDependencies": {}
+}

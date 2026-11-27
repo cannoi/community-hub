@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1
+# Community Hub — image WITH the libp2p stack, dependencies installed at BUILD time only.
+#   docker build -f Dockerfile.p2p -t community-hub:p2p-test .
+# Never run `npm install` inside a running container. P2P stays disabled unless P2P_ENABLED=true is set at runtime.
+# The build generates and validates a complete lockfile from the exact direct pins before npm ci.
+
+FROM node:22-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY scripts/p2p-lock-check.js ./scripts/p2p-lock-check.js
+# gate 1: create a complete lock from the exact direct versions pinned in package.json.
+# The source archive may carry only the root lock metadata; the build resolves transitive versions here.
+RUN npm install --package-lock-only --ignore-scripts --no-audit --no-fund \
+ && node scripts/p2p-lock-check.js
+# gate 2: install exactly what the generated lock records; lifecycle scripts stay disabled.
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund && npm cache clean --force
+# gate 3: the ESM-only packages must be importable on this Node (catches a wrong "exports"/version mix at build time)
+RUN node -e "const n=['libp2p','@libp2p/websockets','@libp2p/noise','@libp2p/yamux','@libp2p/identify','@libp2p/ping','@libp2p/peer-id','@libp2p/crypto','@libp2p/gossipsub']; Promise.all(n.map(m=>import(m).then(()=>m))).then(r=>console.log('imports ok:',r.length)).catch(e=>{console.error('IMPORT FAILED',e.message);process.exit(1)})"
+
+FROM node:22-alpine
+ENV NODE_ENV=production
+WORKDIR /app
+# runtime stage is identical to the default Dockerfile: non-root, no chmod 777, state in /app/data
+COPY --chown=node:node . .
+COPY --chown=node:node --from=deps /app/node_modules ./node_modules
+COPY --chown=node:node --from=deps /app/package-lock.json ./package-lock.json
+RUN mkdir -p /app/data && chown -R node:node /app/data
+USER node
+EXPOSE 8080
+VOLUME ["/app/data"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||8080)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["node", "server.js"]

@@ -1,0 +1,28 @@
+HTTP/2 200 
+date: Sun, 22 Nov 2026 16:34:01 GMT
+content-type: application/json; charset=utf-8
+content-length: 253
+access-control-allow-origin: *
+cache-control: no-store
+access-control-allow-headers: content-type
+access-control-allow-methods: GET, POST, OPTIONS
+access-control-max-age: 86400
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=o6iGXhTiyIQz4Q7dhjprWo43ouHC9tuq0ohu3dAHZyjG%2BPI4sRmrLh%2BmLGY8bu%2FKCLtaiSilgMwmSIi5Z18S62SsDEyDbWT2vVXojb9xEB%2F1y3jom87S2O%2BxXMuzLJsqpsZmpURMfkvGXmTvYgngjqBv96rMoRJ%2FO4Frb6gwtuqM4hg6o39WyO2trrvY"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a5e956d5feae481c-IAD
+alt-svc: h3=":443"; ma=86400
+
+{
+  "ok": true,
+  "service": "cannoi-community-bootstrap",
+  "version": "1.0.0",
+  "network": "cannoi",
+  "protocol": "1.0.0",
+  "database": "ok",
+  "active_peers": 0,
+  "probe_back": true,
+  "probe_strict": false,
+  "time": "2026-11-22T16:34:01.297Z"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Community Hub",
+  "description": "Self-hosted decentralized community and P2P federated social network (CANNOI)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
